@@ -10,6 +10,8 @@
 
 <body>
   <div id="app">
+    <button @click="applyConfig">应用配置</button>
+    <hr>
     <ul>
       <li> <strong>JSON.parse</strong>
         <input type="checkbox" v-model="JSONParse.hook" value="JSON.parse">Hook
@@ -39,8 +41,8 @@
 
     </ul>
     <hr>
-    <button @click="applyConfig">应用配置</button>
-    <p>已选选项: {{ config }}</p>
+    
+    <p>已选选项: {{JSON.stringify(config)}}</p>
   </div>
   <script>
     new Vue({
