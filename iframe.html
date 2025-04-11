@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iframe Page</title>
+</head>
+<body>
+  <h1>Iframe Page</h1>
+
+  <button onclick="sendMessage()">Send Message to Parent</button>
+
+  <script>
+    function sendMessage() {
+      // 向父页面发送消息
+      window.parent.postMessage("Hello from iframe", "*");
+    }
+  </script>
+</body>
+</html>
