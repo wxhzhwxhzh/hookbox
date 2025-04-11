@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue2 Checkbox Example</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <ul>
+      <li> <strong>JSON.parse</strong>
+        <input type="checkbox" v-model="JSONParse.hook" value="JSON.parse">Hook
+        <span v-show="JSONParse.hook">
+          <input type="checkbox" v-model="JSONParse.debug"> debug
+          <input type="checkbox" v-model="JSONParse.included"> include
+          <input type="text" v-model="JSONParse.includedValue" v-show="JSONParse.included" placeholder="输入包含的字符串">
+        </span>
+      
+      
+      </li>
+      <hr>
+      <li> <strong>JSON.stringify</strong>
+        <input type="checkbox" v-model="JSONStringify.hook" value="JSON.stringify">Hook
+        <span v-show="JSONStringify.hook">
+          <input type="checkbox" v-model="JSONStringify.debug"> debug
+          <input type="checkbox" v-model="JSONStringify.included"> include
+          <input type="text" v-model="JSONStringify.includedValue" v-show="JSONStringify.included" placeholder="输入包含的字符串">
+        </span>
+      </li>
+
+
+        
+
+
+      <!-- <li><input type="checkbox" v-model="hooks.hookJSONStringify" value="JSON.stringify">JSON.stringify</li> -->
+
+    </ul>
+    <hr>
+    <button @click="applyConfig">应用配置</button>
+    <p>已选选项: {{ config }}</p>
+  </div>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+ 
+        JSONParse: {
+          debug: false,
+          hook: false,
+          included:false,
+          includedValue:'',
+        },
+        JSONStringify: {
+          debug: false,
+          hook: false,
+          included:false,
+          includedValue:'',
+        }
+      },
+      computed:{
+        config(){
+          return {
+            JSONParse:this.JSONParse,
+            JSONStringify:this.JSONStringify,
+          }
+        }
+      },
+      watch:{
+        config:{
+          handler(newVal,oldVal){
+            console.log('config changed',newVal,oldVal)
+          },
+          deep:true,
+        }
+      },
+      methods:{
+        applyConfig(){
+          window.parent.postMessage(this.config, "*");
+          console.log('config applied',this.config)
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
