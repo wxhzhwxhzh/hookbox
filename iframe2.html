@@ -6,11 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vue2 Checkbox Example</title>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <link rel="stylesheet" href="./iframe2.css">
 </head>
 
 <body>
   <div id="app">
     <button @click="applyConfig">应用配置</button>
+    <button @click="applyConfig" v-show="showChangeButton">应用变更的配置</button>
     <hr>
     <ul>
       <li> <strong>JSON.parse</strong>
@@ -41,47 +43,59 @@
 
     </ul>
     <hr>
-    
-    <p>已选选项: {{JSON.stringify(config)}}</p>
+   
+    <ul>
+      <li v-for="(value, key) in config" :key="key">
+        {{ key }}<p>{{value}}</p>        
+      </li>
+    </ul>
   </div>
   <script>
     new Vue({
       el: '#app',
       data: {
- 
+        showChangeButton: false,
+
         JSONParse: {
           debug: false,
           hook: false,
-          included:false,
-          includedValue:'',
+          included: false,
+          includedValue: '',
+          
         },
         JSONStringify: {
           debug: false,
           hook: false,
-          included:false,
-          includedValue:'',
+          included: false,
+          includedValue: ''          
         }
       },
-      computed:{
-        config(){
+      computed: {
+        config() {
           return {
-            JSONParse:this.JSONParse,
-            JSONStringify:this.JSONStringify,
+            JSONParse: this.JSONParse.hook? `HookBoxs.JSONParse.hook(debug=${this.JSONParse.debug},include="${this.JSONParse.includedValue}")`:"HookBoxs.JSONParse.unhook()",
+            JSONStringify: this.JSONStringify.hook? `HookBoxs.JSONStringify.hook(debug=${this.JSONStringify.debug},include="${this.JSONStringify.includedValue}")`:"HookBoxs.JSONStringify.unhook()",
           }
-        }
+        },
+
       },
-      watch:{
-        config:{
-          handler(newVal,oldVal){
-            console.log('config changed',newVal,oldVal)
+
+
+      watch: {
+        config: {
+          handler(newVal, oldVal) {
+            console.log('config changed', newVal, oldVal)
+            this.showChangeButton = true;
           },
-          deep:true,
-        }
+          deep: true,
+        },
+
       },
-      methods:{
-        applyConfig(){
+      methods: {
+        applyConfig() {
           window.parent.postMessage(this.config, "*");
-          console.log('config applied',this.config)
+          console.log('config applied', this.config);
+          this.showChangeButton = false;
         }
       }
     });
