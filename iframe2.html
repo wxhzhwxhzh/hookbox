@@ -13,6 +13,8 @@
   <div id="app">
     <button @click="applyConfig">应用配置</button>
     <button @click="applyConfig" v-show="showChangeButton">应用变更的配置</button>
+    <button @click="toJS" >转换并复制成JS代码</button>
+    <button @click="toDP" >转换并复制成DrissionPage代码</button>
     <hr>
     <ul>
       <li> <strong>JSON.parse</strong>
@@ -50,7 +52,11 @@
       </li>
     </ul>
   </div>
+  <script src="./iframe2.js"></script>
   <script>
+
+
+
     new Vue({
       el: '#app',
       data: {
@@ -96,6 +102,16 @@
           window.parent.postMessage(this.config, "*");
           console.log('config applied', this.config);
           this.showChangeButton = false;
+        },
+        toDP(){
+          let a =toDrissionPageCode(this.config)
+          copyToClipboard(a)
+          alert("DrissionPage语法复制成功")
+        },
+        toJS(){
+          let a =toJSCode(this.config)
+          copyToClipboard(a)
+          alert("JS语法复制成功")  
         }
       }
     });
